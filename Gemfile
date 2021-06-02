@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in afterpay-ruby.gemspec
+# Specify your gem's dependencies in afterpay-sdk.gemspec
 gemspec
 
 group :test do

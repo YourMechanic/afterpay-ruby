@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "pry"
+
 module Afterpay
-  # The Order object for creating an order to `/v1/orders`
+  # The Order object for creating an order to `/v2/checkouts`
   class Order
     attr_accessor :total, :consumer, :items, :shipping, :tax, :discounts,
                   :billing, :shipping_address, :billing_address, :reference,
-                  :payment_type, :success_url, :cancel_url
+                  :payment_type, :success_url, :cancel_url, :redirect_checkout_url
 
     attr_reader :expiry, :token, :error
 
@@ -13,7 +15,7 @@ module Afterpay
     # @param token [String]
     # @return [Order]
     def self.find(token)
-      request = Afterpay.client.get("/v1/orders/#{token}")
+      request = Afterpay.client.get("/v2/checkouts/#{token}")
 
       Order.from_response(request.body)
     end
@@ -65,10 +67,12 @@ module Afterpay
       @error = nil
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+
     # Builds structure to API specs
     def to_hash
       data = {
-        totalAmount: Utils::Money.api_hash(total),
+        amount: Utils::Money.api_hash(total),
         consumer: consumer.to_hash,
         items: items.map(&:to_hash),
         merchant: {
@@ -88,17 +92,19 @@ module Afterpay
       data
     end
 
+    # rubocop:enable Metrics/CyclomaticComplexity
+
     # Sends the create request to Afterpay server
     # @return [Response]
     def create
-      request = Afterpay.client.post("/v1/orders") do |req|
+      request = Afterpay.client.post("/v2/checkouts") do |req|
         req.body = to_hash
       end
       response = request.body
-
       if request.success?
-        @expiry = Time.parse(response[:expires])
+        @expiry = response[:expires]
         @token = response[:token]
+        @redirect_checkout_url = response[:redirectCheckoutUrl]
       else
         @error = Error.new(response)
       end

@@ -1,19 +1,15 @@
-[![Build Status](https://travis-ci.org/bluethumbart/afterpay-ruby.svg?branch=master)](https://travis-ci.org/bluethumbart/afterpay-ruby)
-[![Coverage Status](https://coveralls.io/repos/github/bluethumbart/afterpay-ruby/badge.svg?branch=master)](https://coveralls.io/github/bluethumbart/afterpay-ruby?branch=master)
-[![Gem Version](https://badge.fury.io/rb/afterpay-ruby.svg)](https://badge.fury.io/rb/afterpay-ruby)
-
 # Afterpay Ruby
 
-Based on the [API docs](https://docs.afterpay.com/au-online-api-v1.html)
+Based on the [API docs](https://developers.afterpay.com/afterpay-online/reference)
 
-Afterpay Ruby is a Ruby wrapper for Afterpay API. It provides simple DSL and serialization to Afterpay's API attribute.
+Afterpay Ruby is a Ruby wrapper for Afterpay API. It provides simple DSL and serialization to Afterpay's API attribute. This version supports the v2 version of Afterpay API.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'afterpay-ruby'
+gem 'afterpay-sdk'
 ```
 
 And then execute:
@@ -22,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install afterpay-ruby
+    $ gem install afterpay-sdk
 
 ## Usage
 
@@ -40,7 +36,7 @@ Afterpay.configure do |config|
   # config.env = "sandbox" # "live"
 
   # Sets the user agent header for Afterpay requests
-  # Refer https://docs.afterpay.com/au-online-api-v1.html#configuration
+  # Refer https://developers.afterpay.com/afterpay-online/reference#configuration
   # config.user_agent_header = {pluginOrModuleOrClientLibrary}/{pluginVersion} ({platform}/{platformVersion}; Merchant/{merchantId}) { merchantUrl }
   # Example
   # config.user_agent_header = "Afterpay Module / 1.0.0 (rails/ 5.1.2; Merchant/#{ merchant_id }) #{ merchant_website_url }"
@@ -50,9 +46,9 @@ end
 
 ### Creating an Order
 
-[api docs](https://docs.afterpay.com/au-online-api-v1.html#create-order)
+[api docs](https://YourMechanic/afterpay-sdk#create-checkout)
 
-Order accepts a [Consumer](https://github.com/bluethumbart/afterpay-ruby#consumer-object) and an array of [Item](https://github.com/bluethumbart/afterpay-ruby#item-object) object which are required.
+Order accepts a [Consumer](YourMechanic/afterpay-sdk#consumer-object) and an array of [Item](YourMechanic/afterpay-sdk#item-object) object which are required.
 
 ```ruby
 order = Afterpay::Order.create(
@@ -62,7 +58,7 @@ order = Afterpay::Order.create(
   success_url: <String>,
   cancel_url: <String>,
   reference: <String>,
-  tax: <Money | optional>,
+  tax: <Money>,
   shipping: <Money | optional>,
   discounts: [<Afterpay::Discount | optional>],
   billing_address: <Afterpay::Address | optional>,
@@ -110,9 +106,33 @@ payment.status
 => APPROVED
 ```
 
+### Deferred Payment
+
+```ruby
+mony = Money.from_amount(1000, "USD")
+
+For Auth
+Afterpay::Payment.execute_auth(request_id: 'fjfwwwjfj090292920', token: '002.v4krg5qpii1tbp0kvr261rf3p1k5jfe2fin', merchant_reference: '100101382')
+
+For executing deferred payment
+Afterpay::Payment.execute_deffered_payment(request_id: 'ppjjjkjk', reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
+```
+
+### Void payment
+
+```ruby
+Afterpay::Payment.execute_void(request_id: 'ppjjjkjk', order_id: 'same_as_id_of_auth_output', amount: mony)
+```
+
+### Refund
+
+```ruby
+Afterpay::Refund.execute(request_id: 'unique_id', order_id: 'order_id', amount: mony, merchant_reference: '100101382', refund_merchant_reference: '100101111')
+```
+
 ### Consumer Object
 
-[api docs](https://docs.afterpay.com/au-online-api-v1.html#consumer-object)
+[api docs](https://developers.afterpay.com/afterpay-online/reference#consumer-object)
 
 Consumer contains the details of the payee which will be serialized to API's format.
 
@@ -127,7 +147,7 @@ Afterpay::Consumer.new(
 
 ### Item Object
 
-[api docs](https://docs.afterpay.com/au-online-api-v1.html#item-object)
+[api docs](https://developers.afterpay.com/afterpay-online/reference#item-object)
 
 Item holds the details of purchace per item.
 
@@ -137,12 +157,16 @@ Afterpay::Item.new(
   price: <Money>,
   sku: <String | optional>,
   quantity: <Number | defaults to 1>,
+  page_url: <String | optional>,
+  image_url: <String | optional>,
+  categories: [][],
+  estimatedShipmentDate: <String | optional>
 )
 ```
 
 ### Discount Object
 
-[api docs](https://docs.afterpay.com/au-online-api-v1.html#discount-object)
+[api docs](https://developers.afterpay.com/afterpay-online/reference#discount-object)
 
 Discount Applied to the Order
 
@@ -155,7 +179,7 @@ Afterpay::Discount.new(
 
 ### Address Object
 
-[api docs](https://docs.afterpay.com/au-online-api-v1.html#contact-object)
+[api docs](https://developers.afterpay.com/afterpay-online/reference#contact-object)
 
 Item holds the details of purchace per item.
 
@@ -164,8 +188,9 @@ Afterpay::Address.new(
   name: <String>,
   line_1: <String>,
   line_2: <String | optional>,
-  suburb: <String | optional>,
-  state: <String>,
+  area_1: <String | required | Limited to 128 characters>,
+  area_2: <String | optional | Limited to 128 characters>,
+  region: <String | required | Limited to 128 characters>,
   postcode: <String | Number>,
   country: <String | optional>,
   phone: <String>
@@ -180,7 +205,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bluethumbart/afterpay-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/bluethumbart/afterpay-sdk. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 You will need to copy `.env.sample` to `.env` for running Afterpay console. This will not be checked into git.
 
@@ -190,4 +215,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Afterpay project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/afterpay-ruby/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Afterpay project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/afterpay-sdk/blob/master/CODE_OF_CONDUCT.md).

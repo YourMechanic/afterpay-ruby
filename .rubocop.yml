@@ -1,6 +1,6 @@
 AllCops:
   Exclude:
-    - "afterpay-ruby.gemspec"
+    - "afterpay-sdk.gemspec"
     - "bin/*"
 
 Style/StringLiterals:
@@ -28,6 +28,6 @@ Metrics/MethodLength:
 
 Naming/FileName:
   Exclude:
-    - "lib/afterpay-ruby.rb"
+    - "lib/afterpay-sdk.rb"
 Naming/VariableNumber:
   Enabled: false

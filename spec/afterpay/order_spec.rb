@@ -12,8 +12,8 @@ RSpec.describe Afterpay::Order do
     Afterpay::Address.new(
       name: "John Doe",
       line_1: "An address",
-      suburb: "Melbourne",
-      state: "QLD",
+      area_1: "Melbourne",
+      region: "VIC",
       postcode: 3000,
       phone: 1402312000
     )
@@ -31,7 +31,14 @@ RSpec.describe Afterpay::Order do
       items: [Afterpay::Item.new(
         name: "Item Name",
         sku: 1,
-        price: Money.from_amount(1000, "AUD")
+        price: Money.from_amount(1000, "AUD"),
+        page_url: "https://merchant.example.com/carabiner-354193.html",
+        image_url: "https://merchant.example.com/carabiner-7378-391453-1.jpg",
+        categories: [
+          ["Sporting Goods", "Climbing Equipment", "Climbing", "Climbing Carabiners"],
+          %w[Sale Climbing]
+        ],
+        estimated_shipment_date: "2021-03-01"
       )],
       success_url: "http://example.com/success",
       cancel_url: "http://example.com/cancel"
@@ -67,7 +74,14 @@ RSpec.describe Afterpay::Order do
           items: [Afterpay::Item.new(
             name: "Item Name",
             sku: 1,
-            price: Money.from_amount(1000, "AUD")
+            price: Money.from_amount(1000, "AUD"),
+            page_url: "https://merchant.example.com/carabiner-354193.html",
+            image_url: "https://merchant.example.com/carabiner-7378-391453-1.jpg",
+            categories: [
+              ["Sporting Goods", "Climbing Equipment", "Climbing", "Climbing Carabiners"],
+              %w[Sale Climbing]
+            ],
+            estimated_shipment_date: "2021-03-01"
           )],
           success_url: "http://example.com/success",
           cancel_url: "http://example.com/cancel",
@@ -100,10 +114,9 @@ RSpec.describe Afterpay::Order do
     it "transform Order to Afterpay hash" do
       hash = order.to_hash
 
-      expect(hash[:totalAmount][:amount]).to eq(1000.0)
-      expect(hash[:totalAmount][:currency]).to eq("AUD")
+      expect(hash[:amount][:amount]).to eq(1000.0)
+      expect(hash[:amount][:currency]).to eq("AUD")
       expect(hash[:consumer]).to be_a Hash
-      expect(hash[:items]).not_to be_empty
       expect(hash[:merchant][:redirectConfirmUrl]).to match(/success/)
       expect(hash[:merchant][:redirectCancelUrl]).to match(/cancel/)
     end

@@ -3,7 +3,7 @@
 require "dotenv"
 Dotenv.load
 
-Money.default_currency = ENV["DEFAULT_CURRENCY"] || "AUD"
+Money.default_currency = ENV["DEFAULT_CURRENCY"] || "USD"
 
 Afterpay.configure do |config|
   config.app_id = ENV["APP_ID"]

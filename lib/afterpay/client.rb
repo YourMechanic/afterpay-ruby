@@ -4,6 +4,7 @@ require "faraday"
 require "faraday_middleware"
 require "base64"
 require "forwardable"
+require "pry"
 
 module Afterpay
   # Client object acting as the connection
@@ -11,10 +12,11 @@ module Afterpay
   class Client
     extend Forwardable
 
-    BASE_URL = "https://api.afterpay.com/".freeze
-    SANDBOX_BASE_URL = "https://api-sandbox.afterpay.com/".freeze
+    BASE_URL = "https://api.afterpay.com/"
+    SANDBOX_BASE_URL = "https://api.us-sandbox.afterpay.com/v2/"
 
     class NotFoundError < StandardError; end
+
     class UnauthorizedError < StandardError; end
 
     def_delegators :@connection, :get, :put, :post, :delete
@@ -28,7 +30,6 @@ module Afterpay
     # `<app_id>:<secret>`
     def self.auth_token
       auth_str = "#{Afterpay.config.app_id}:#{Afterpay.config.secret}"
-
       Base64.strict_encode64(auth_str)
     end
 
@@ -43,7 +44,7 @@ module Afterpay
         Faraday.new(url: self.class.server_url) do |conn|
           conn.use ErrorMiddleware if Afterpay.config.raise_errors
           conn.authorization "Basic", self.class.auth_token
-          conn.headers['User-Agent'] = Afterpay.config.user_agent_header if Afterpay.config.user_agent_header.present?
+          # conn.headers["User-Agent"] = Afterpay.config.user_agent_header if Afterpay.config.user_agent_header.present?
 
           conn.request :json
           conn.response :json, content_type: "application/json", parser_options: { symbolize_names: true }
@@ -62,9 +63,9 @@ module Afterpay
       @app.call(env).on_complete do
         case env[:status]
         when 404
-          raise Client::NotFoundError, env.dig(:body, "message")
+          raise Client::NotFoundError, env.body[:message]
         when 401
-          raise Client::UnauthorizedError, env.dig(:body, "message")
+          raise Client::UnauthorizedError, env.body[:message]
         end
       end
     end
