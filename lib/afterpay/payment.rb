@@ -76,7 +76,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.update_shipping_courier(order_id:, shipped_at:, name: , tracking:, priority: )
+    def self.update_shipping_courier(order_id:, shipped_at:, name:, tracking:, priority:)
       request = Afterpay.client.put("/v2/payments/#{order_id}/courier") do |req|
         req.body = {
           shippedAt: shipped_at,

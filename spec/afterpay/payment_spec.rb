@@ -99,8 +99,8 @@ RSpec.describe Afterpay::Payment do
 
     it "returns a payment object", :vcr do
       payment = described_class.update_shipping_courier(order_id: valid_order_id,
-        shipped_at: DateTime.now.iso8601,
-        name: 'Bludart', tracking: 'AWB129181', priority: 'EXPRESS')
+                                                        shipped_at: DateTime.now.iso8601,
+                                                        name: "Bludart", tracking: "AWB129181", priority: "EXPRESS")
 
       expect(payment).to be_a Afterpay::Payment
       expect(payment.error).to be_nil
