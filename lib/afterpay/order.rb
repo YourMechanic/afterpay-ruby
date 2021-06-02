@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "pry"
-
 module Afterpay
   # The Order object for creating an order to `/v2/checkouts`
   class Order
