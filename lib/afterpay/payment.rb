@@ -8,7 +8,7 @@ module Afterpay
 
     # Initialize Payment from response
     def initialize(attributes)
-      @id = attributes[:id]
+      @id = attributes[:id].to_i
       @token = attributes[:token]
       @status = attributes[:status]
       @created = attributes[:created]
@@ -53,7 +53,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_deffered_payment(request_id:, reference:, amount:,
+    def self.execute_deferred_payment(request_id:, reference:, amount:,
                                       payment_event_merchant_reference:, order_id:)
       request = Afterpay.client.post("/v2/payments/#{order_id}/capture") do |req|
         req.body = {
@@ -73,6 +73,29 @@ module Afterpay
           amount: Utils::Money.api_hash(amount)
         }
       end
+      new(request.body)
+    end
+
+    def self.update_shipping_courier(order_id:, shipped_at:, name: , tracking:, priority: )
+      request = Afterpay.client.put("/v2/payments/#{order_id}/courier") do |req|
+        req.body = {
+          shippedAt: shipped_at,
+          name: name,
+          tracking: tracking,
+          priority: priority
+        }
+      end
+      new(request.body)
+    end
+
+    def self.get_payment_by_order_id(order_id:)
+      request = Afterpay.client.get("/v2/payments/#{order_id}")
+      new(request.body)
+    end
+
+    # This endpoint retrieves an individual payment along with its order details.
+    def self.get_payment_by_token(token:)
+      request = Afterpay.client.get("/v2/payments/token:#{token}")
       new(request.body)
     end
   end
