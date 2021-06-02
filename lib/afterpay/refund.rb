@@ -3,7 +3,7 @@
 module Afterpay
   class Refund
     attr_accessor :request_id, :amount, :merchant_reference, :refund_id, :refunded_at,
-                  :refund_merchant_reference
+                  :refund_merchant_reference, :error
 
     def initialize(attributes)
       @request_id = attributes[:requestId]
@@ -12,6 +12,7 @@ module Afterpay
       @refund_id = attributes[:refundId]
       @refunded_at = attributes[:refundAt]
       @refund_merchant_reference = attributes[:refundMerchantReference]
+      @error = Error.new(attributes) if attributes[:errorId]
     end
 
     def self.execute(request_id:, order_id:, amount:, merchant_reference:,
