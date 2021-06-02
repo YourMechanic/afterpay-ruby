@@ -66,13 +66,13 @@ module Afterpay
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
 
     # Builds structure to API specs
     def to_hash
       data = {
         amount: Utils::Money.api_hash(total),
         consumer: consumer.to_hash,
-        items: items.map(&:to_hash),
         merchant: {
           redirectConfirmUrl: success_url,
           redirectCancelUrl: cancel_url
@@ -81,7 +81,7 @@ module Afterpay
         taxAmount: tax,
         paymentType: payment_type
       }
-
+      data[items] = items.map(&:to_hash) if items
       data[:taxAmount] = Utils::Money.api_hash(tax) if tax
       data[:shippingAmount] = Utils::Money.api_hash(shipping) if shipping
       data[:discounts] = discounts.map(&:to_hash) if discounts
@@ -91,6 +91,7 @@ module Afterpay
     end
 
     # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     # Sends the create request to Afterpay server
     # @return [Response]
