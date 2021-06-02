@@ -9,7 +9,7 @@ Afterpay Ruby is a Ruby wrapper for Afterpay API. It provides simple DSL and ser
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'afterpay-ruby'
+gem 'afterpay-sdk'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install afterpay-ruby
+    $ gem install afterpay-sdk
 
 ## Usage
 
@@ -46,9 +46,9 @@ end
 
 ### Creating an Order
 
-[api docs](https://YourMechanic/afterpay-ruby#create-checkout)
+[api docs](https://YourMechanic/afterpay-sdk#create-checkout)
 
-Order accepts a [Consumer](YourMechanic/afterpay-ruby#consumer-object) and an array of [Item](YourMechanic/afterpay-ruby#item-object) object which are required.
+Order accepts a [Consumer](YourMechanic/afterpay-sdk#consumer-object) and an array of [Item](YourMechanic/afterpay-sdk#item-object) object which are required.
 
 ```ruby
 order = Afterpay::Order.create(
@@ -108,6 +108,7 @@ payment.status
 
 ### Deferred Payment
 
+```ruby
 mony = Money.from_amount(1000, "USD")
 
 For Auth
@@ -115,14 +116,19 @@ Afterpay::Payment.execute_auth(request_id: 'fjfwwwjfj090292920', token: '002.v4k
 
 For executing deferred payment
 Afterpay::Payment.execute_deffered_payment(request_id: 'ppjjjkjk', reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
+```
 
 ### Void payment
 
+```ruby
 Afterpay::Payment.execute_void(request_id: 'ppjjjkjk', order_id: 'same_as_id_of_auth_output', amount: mony)
+```
 
 ### Refund
 
+```ruby
 Afterpay::Refund.execute(request_id: 'unique_id', order_id: 'order_id', amount: mony, merchant_reference: '100101382', refund_merchant_reference: '100101111')
+```
 
 ### Consumer Object
 
@@ -199,7 +205,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bluethumbart/afterpay-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/bluethumbart/afterpay-sdk. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 You will need to copy `.env.sample` to `.env` for running Afterpay console. This will not be checked into git.
 
@@ -209,4 +215,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Afterpay project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/afterpay-ruby/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Afterpay project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/afterpay-sdk/blob/master/CODE_OF_CONDUCT.md).
