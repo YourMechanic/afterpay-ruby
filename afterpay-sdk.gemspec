@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   #   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   #   spec.metadata["homepage_uri"] = spec.homepage
-  #   spec.metadata["source_code_uri"] = "https://github.com/bluethumbart/afterpay-sdk"
+  #   spec.metadata["source_code_uri"] = "https://github.com/YourMechanic/afterpay-sdk"
   # else
   #   raise "RubyGems 2.0 or newer is required to protect against " \
   #     "public gem pushes."
