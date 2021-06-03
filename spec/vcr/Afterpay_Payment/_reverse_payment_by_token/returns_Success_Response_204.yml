@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.us-sandbox.afterpay.com/v2/payments/token:002.ravtg74qgcjm6s2rsee013g2q5gp7rqfq4658kup8nc2ba75/reversal
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      Authorization:
+      - Basic MTAwMTAxMzgyOjFjYWQwZDEyNTQ2YTY2NTZkMDUwMzcyN2ZlMjA2ODVjZTc0YTIzYmI5MTM1NzRlMjQ0YjQwMWExN2YzZjY2N2ViYzViZDkwYjI2ZWE5YzRmMThmOTJjNzk4MjQ2MjAyN2E5NGViMzFjNzBkNjBhMzg2N2ZiZGQxNWM3MzAxODY5
+      User-Agent:
+      - Faraday v0.17.4
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      date:
+      - Thu, 03 Jun 2021 10:20:01 GMT
+      connection:
+      - close
+      http_correlation_id:
+      - lyfayupbljdb2u3umo3346sqr4
+      x-envoy-upstream-service-time:
+      - '128'
+      cf-cache-status:
+      - DYNAMIC
+      cf-request-id:
+      - 0a72fc279900000f14698c7000000001
+      expect-ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      set-cookie:
+      - __cf_bm=0b4b6da5d28824023f730fffb6b82a35f92ce80e-1622715601-1800-ARcPAhezzdr4J7rSRHRqI1W4/pEO4gdn1Bq0PX9DOA7Fq185tzTacozNnPVxF05cRKhsTjibQFYgaaIBQXBlP2GWh/h+OM1WssGuz14oPLPJ;
+        path=/; expires=Thu, 03-Jun-21 10:50:01 GMT; domain=.afterpay.com; HttpOnly;
+        Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      server:
+      - cloudflare
+      cf-ray:
+      - 65982fb8fce60f14-BOM
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Thu, 03 Jun 2021 10:20:01 GMT
+recorded_with: VCR 4.0.0

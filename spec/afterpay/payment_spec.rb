@@ -52,13 +52,13 @@ RSpec.describe Afterpay::Payment do
     end
   end
 
-  describe ".execute_deffered_payment" do
+  describe ".execute_deferred_payment" do
     let(:merchant_reference) { "100101468" }
     let(:mony) { Money.from_amount(250, "USD") }
     let(:valid_order_id) { 100101529842 }
 
     it "returns a payment", :vcr do
-      payment = described_class.execute_deffered_payment(request_id: "wert100101529590",
+      payment = described_class.execute_deferred_payment(request_id: "wert100101529590",
                                                          reference: merchant_reference, amount: mony,
                                                          payment_event_merchant_reference: "", order_id: valid_order_id)
 
@@ -70,7 +70,7 @@ RSpec.describe Afterpay::Payment do
 
     context "invalid order ID" do
       it "returns error", :vcr do
-        payment = described_class.execute_deffered_payment(request_id: "wert100101529590",
+        payment = described_class.execute_deferred_payment(request_id: "wert100101529590",
                                                            reference: merchant_reference, amount: mony,
                                                            payment_event_merchant_reference: "", order_id: valid_order_id + 1)
 
@@ -91,6 +91,74 @@ RSpec.describe Afterpay::Payment do
 
       expect(payment).to be_a Afterpay::Payment
       expect(payment.error).to be_nil
+    end
+  end
+
+  describe ".update_shipping_courier" do
+    let(:valid_order_id) { 100101529842 }
+
+    it "returns a payment object", :vcr do
+      payment = described_class.update_shipping_courier(order_id: valid_order_id,
+                                                        shipped_at: DateTime.now.iso8601,
+                                                        name: "Bludart", tracking: "AWB129181", priority: "EXPRESS")
+
+      expect(payment).to be_a Afterpay::Payment
+      expect(payment.error).to be_nil
+    end
+  end
+
+  describe ".get_payment_by_order_id" do
+    let(:valid_order_id) { 100101529842 }
+
+    it "fetches a payment object by its order_id", :vcr do
+      payment = described_class.get_payment_by_order_id(order_id: valid_order_id)
+
+      expect(payment).to be_a Afterpay::Payment
+      expect(payment.id).to eq(100101529842)
+      expect(payment.error).to be_nil
+    end
+  end
+
+  describe ".get_payment_by_token" do
+    let(:valid_token) { "002.avpv776th25fof4itbfvrc019dqje4ia27qjk5525o3mfosr" }
+
+    it "fetches a payment object by its token", :vcr do
+      payment = described_class.get_payment_by_token(token: valid_token)
+
+      expect(payment).to be_a Afterpay::Payment
+      expect(payment.error).to be_nil
+    end
+  end
+
+  describe ".update_payment_by_order_id" do
+    let(:valid_order_id) { 100101529842 }
+
+    it "returns an object with updated merchantReference", :vcr do
+      obj = described_class.update_payment_by_order_id(order_id: valid_order_id,
+                                                       merchant_reference: "new_merchant_order_id_1234")
+      expect(obj[:merchantReference]).to eq("new_merchant_order_id_1234")
+    end
+  end
+
+  describe ".reverse_payment_by_token" do
+    let(:valid_token) { "002.ravtg74qgcjm6s2rsee013g2q5gp7rqfq4658kup8nc2ba75" }
+
+    it "returns Success Response 204", :vcr do
+      status = described_class.reverse_payment_by_token(token: valid_token)
+      expect(status).to eq(204)
+    end
+  end
+
+  describe ".list_payments" do
+    it "returns an array of payments in results key", :vcr do
+      response = described_class.list_payments(
+        to_created_date: nil,
+        from_created_date: nil, limit: 10, offset: 0,
+        tokens: [],
+        ids: ["100101533036"], merchant_ref: ["100101382"],
+        statuses: ["Approved"], order_by: "createdAt", asc: false
+      )
+      expect(response[:results].size).to be > 0
     end
   end
 end

@@ -115,7 +115,7 @@ For Auth
 Afterpay::Payment.execute_auth(request_id: 'fjfwwwjfj090292920', token: '002.v4krg5qpii1tbp0kvr261rf3p1k5jfe2fin', merchant_reference: '100101382')
 
 For executing deferred payment
-Afterpay::Payment.execute_deffered_payment(request_id: 'ppjjjkjk', reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
+Afterpay::Payment.execute_deferred_payment(request_id: 'ppjjjkjk', reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
 ```
 
 ### Void payment
@@ -128,6 +128,72 @@ Afterpay::Payment.execute_void(request_id: 'ppjjjkjk', order_id: 'same_as_id_of_
 
 ```ruby
 Afterpay::Refund.execute(request_id: 'unique_id', order_id: 'order_id', amount: mony, merchant_reference: '100101382', refund_merchant_reference: '100101111')
+```
+
+### Update Shipping Courier
+
+```ruby
+Afterpay::Payment.update_shipping_courier(order_id: valid_order_id,
+                                          shipped_at: DateTime.now.iso8601,
+                                          name: "Bludart",
+                                          tracking: "AWB129181",
+                                          priority: "EXPRESS")
+```
+
+### Get Payment By Order Id
+
+This endpoint retrieves an individual payment along with its order details.
+
+```ruby
+Afterpay::Payment.get_payment_by_order_id(order_id: valid_order_id)
+
+```
+
+### Get Payment By Token
+
+This endpoint retrieves an individual payment along with its order details.
+
+```ruby
+Afterpay::Payment.get_payment_by_token(token: valid_token)
+
+```
+
+### Update Payment by Order Id
+
+This end point is for merchants that creates merchant side's order id after
+AfterPay order id creation. The merchants should call immediately after the AfterPay order is
+in order to properly update with their order id that can be tracked.
+
+```ruby
+Afterpay::Payment.update_payment_by_order_id(order_id: valid_order_id,
+merchant_reference: "new_merchant_order_id_1234")
+```
+
+### reverse_payment_by_token
+
+This endpoint performs a reversal of the checkout that is used to initiate
+the Afterpay payment process. This will cancel the order asynchronously as
+soon as it is created without the need of an additional call to the void endpoint.
+In order for a payment to be eligible, the order must be in an Auth-Approved or
+Captured state and must be issued within 10 minutes of the order being created.
+token paramater is the token of the checkout to be reversed (voided).
+
+```ruby
+Afterpay::Payment.reverse_payment_by_token(token: valid_token)
+```
+
+### list_payments
+
+This endpoint retrieves a collection of payments along with their order details.
+
+```ruby
+Afterpay::Payment.list_payments(
+        to_created_date: nil,
+        from_created_date: nil, limit: 10, offset: 0,
+        tokens: [],
+        ids: ["100101533036"], merchant_ref: ["100101382"],
+        statuses: ["Approved"], order_by: "createdAt", asc: false
+      )
 ```
 
 ### Consumer Object

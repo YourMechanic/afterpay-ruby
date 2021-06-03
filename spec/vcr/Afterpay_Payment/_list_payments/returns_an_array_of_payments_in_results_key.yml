@@ -1,0 +1,151 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.us-sandbox.afterpay.com/v2/payments?ids=100101533036&limit=10&merchantReferences=100101382&offset=0&orderBy=createdAt&statuses=Approved
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Basic MTAwMTAxMzgyOjFjYWQwZDEyNTQ2YTY2NTZkMDUwMzcyN2ZlMjA2ODVjZTc0YTIzYmI5MTM1NzRlMjQ0YjQwMWExN2YzZjY2N2ViYzViZDkwYjI2ZWE5YzRmMThmOTJjNzk4MjQ2MjAyN2E5NGViMzFjNzBkNjBhMzg2N2ZiZGQxNWM3MzAxODY5
+      User-Agent:
+      - Faraday v0.17.4
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      date:
+      - Thu, 03 Jun 2021 12:17:31 GMT
+      content-type:
+      - application/json
+      content-length:
+      - '752'
+      connection:
+      - close
+      cache-control:
+      - private, no-cache, no-store, no-transform, must-revalidate, max-age=0
+      http_correlation_id:
+      - jy5g4jlvu23khde56e25uhtjfi
+      vary:
+      - Accept-Encoding
+      x-envoy-upstream-service-time:
+      - '31'
+      cf-cache-status:
+      - DYNAMIC
+      cf-request-id:
+      - 0a7367bb050000320083a39000000001
+      expect-ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      set-cookie:
+      - __cf_bm=58ab0738b031e93532c9ae4f89a2deccc75fc4a8-1622722651-1800-AX1cN+Ik3gAxgf4x53ugv7hTyf6I6NGlxTisLxkUV1Z5yaTCNNupYXFa1g8ZKy/wCQgVsa5k8sqAqnJXknNqRy4YHj8KzbpEHxu5qbh3deTA;
+        path=/; expires=Thu, 03-Jun-21 12:47:31 GMT; domain=.afterpay.com; HttpOnly;
+        Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      server:
+      - cloudflare
+      cf-ray:
+      - 6598dbd80da13200-BOM
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "totalResults" : 1,
+          "offset" : 0,
+          "limit" : 10,
+          "results" : [ {
+            "id" : "100101533036",
+            "token" : "002.pf1c2d9ffge8iu7asi8bibs6s5e27b6m9jqv94jrquv0oals",
+            "status" : "APPROVED",
+            "created" : "2021-06-02T09:52:47.717Z",
+            "originalAmount" : {
+              "amount" : "10.00",
+              "currency" : "USD"
+            },
+            "openToCaptureAmount" : {
+              "amount" : "0.00",
+              "currency" : "USD"
+            },
+            "paymentState" : "CAPTURED",
+            "merchantReference" : "100101382",
+            "refunds" : [ {
+              "requestId" : "unique_id",
+              "amount" : {
+                "amount" : "10.00",
+                "currency" : "USD"
+              },
+              "merchantReference" : "100101382",
+              "refundId" : "1722722",
+              "refundedAt" : "2021-06-02T10:11:27.563Z",
+              "refundMerchantReference" : "100101111"
+            } ],
+            "orderDetails" : {
+              "consumer" : {
+                "phoneNumber" : "",
+                "givenNames" : "",
+                "surname" : "",
+                "email" : "sachin@yourmechanic.com"
+              },
+              "billing" : {
+                "name" : "ADDESS1",
+                "line1" : "SOME",
+                "line2" : "value",
+                "region" : "U.S. state.",
+                "postcode" : "000000",
+                "countryCode" : "US",
+                "phoneNumber" : "5555555"
+              },
+              "shipping" : {
+                "name" : "ADDESS1",
+                "line1" : "SOME",
+                "line2" : "value",
+                "region" : "U.S. state.",
+                "postcode" : "000000",
+                "countryCode" : "US",
+                "phoneNumber" : "5555555"
+              },
+              "courier" : {
+                "shippedAt" : "2021-06-02T11:05:18.000Z",
+                "name" : "Bludart",
+                "tracking" : "58555",
+                "priority" : "EXPRESS"
+              },
+              "items" : [ ],
+              "discounts" : [ ],
+              "shippingAmount" : {
+                "amount" : "10.00",
+                "currency" : "USD"
+              },
+              "taxAmount" : {
+                "amount" : "10.00",
+                "currency" : "USD"
+              }
+            },
+            "events" : [ {
+              "id" : "1tO6LkOkQwfaCuuz8gYusuDPu7K",
+              "created" : "2021-06-02T09:55:34.311Z",
+              "expires" : "2021-06-09T09:55:34.307Z",
+              "type" : "AUTH_APPROVED",
+              "amount" : {
+                "amount" : "10.00",
+                "currency" : "USD"
+              },
+              "paymentEventMerchantReference" : null
+            }, {
+              "id" : "1tO6T28fMWpQsrpIXbPlBMUsdGF",
+              "created" : "2021-06-02T09:56:32.197Z",
+              "expires" : null,
+              "type" : "CAPTURED",
+              "amount" : {
+                "amount" : "10.00",
+                "currency" : "USD"
+              },
+              "paymentEventMerchantReference" : ""
+            } ]
+          } ]
+        }
+    http_version: 
+  recorded_at: Thu, 03 Jun 2021 12:17:31 GMT
+recorded_with: VCR 4.0.0
