@@ -129,4 +129,23 @@ RSpec.describe Afterpay::Payment do
       expect(payment.error).to be_nil
     end
   end
+
+  describe ".update_payment_by_order_id" do
+    let(:valid_order_id) { 100101529842 }
+
+    it "returns an object with updated merchantReference", :vcr do
+      obj = described_class.update_payment_by_order_id(order_id: valid_order_id,
+                                                       merchant_reference: "new_merchant_order_id_1234")
+      expect(obj[:merchantReference]).to eq("new_merchant_order_id_1234")
+    end
+  end
+
+  describe ".reverse_payment_by_token" do
+    let(:valid_token) { "002.ravtg74qgcjm6s2rsee013g2q5gp7rqfq4658kup8nc2ba75" }
+
+    it "returns Success Response 204", :vcr do
+      status = described_class.reverse_payment_by_token(token: valid_token)
+      expect(status).to eq(204)
+    end
+  end
 end

@@ -98,5 +98,34 @@ module Afterpay
       request = Afterpay.client.get("/v2/payments/token:#{token}")
       new(request.body)
     end
+
+    # This end point is for merchants that creates merchant side's order id after
+    # AfterPay order id creation. The merchants should call immediately after the
+    # AfterPay order is created in order to properly update with their order id
+    # that can be tracked.
+
+    def self.update_payment_by_order_id(order_id:, merchant_reference:)
+      request = Afterpay.client.put("/v2/payments/#{order_id}") do |req|
+        req.body = {
+          # The merchant's new order id to replace with
+          merchantReference: merchant_reference
+        }
+      end
+      request.body
+    end
+
+    # This endpoint performs a reversal of the checkout that is used to initiate
+    # the Afterpay payment process. This will cancel the order asynchronously as
+    # soon as it is created without the need of an additional call to the void endpoint.
+    # In order for a payment to be eligible, the order must be in an Auth-Approved or
+    # Captured state and must be issued within 10 minutes of the order being created.
+    # token paramater is the token of the checkout to be reversed (voided).
+
+    def self.reverse_payment_by_token(token:)
+      request = Afterpay.client.post("/v2/payments/token:#{token}/reversal") do |req|
+        req.body = {}
+      end
+      request.status
+    end
   end
 end
