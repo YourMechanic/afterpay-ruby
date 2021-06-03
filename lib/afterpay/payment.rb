@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 module Afterpay
   # They Payment object
   class Payment
@@ -38,7 +40,6 @@ module Afterpay
           merchantRefernce: reference
         }
       end
-
       new(request.body)
     end
 
@@ -88,6 +89,7 @@ module Afterpay
       new(request.body)
     end
 
+    # This endpoint retrieves an individual payment along with its order details.
     def self.get_payment_by_order_id(order_id:)
       request = Afterpay.client.get("/v2/payments/#{order_id}")
       new(request.body)
@@ -103,7 +105,6 @@ module Afterpay
     # AfterPay order id creation. The merchants should call immediately after the
     # AfterPay order is created in order to properly update with their order id
     # that can be tracked.
-
     def self.update_payment_by_order_id(order_id:, merchant_reference:)
       request = Afterpay.client.put("/v2/payments/#{order_id}") do |req|
         req.body = {
@@ -120,12 +121,44 @@ module Afterpay
     # In order for a payment to be eligible, the order must be in an Auth-Approved or
     # Captured state and must be issued within 10 minutes of the order being created.
     # token paramater is the token of the checkout to be reversed (voided).
-
     def self.reverse_payment_by_token(token:)
       request = Afterpay.client.post("/v2/payments/token:#{token}/reversal") do |req|
         req.body = {}
       end
       request.status
     end
+
+    def self.create_url(url, type, values)
+      if values.size.positive?
+        values.each do |value|
+          url += "&#{type}=#{value}"
+        end
+      end
+      url
+    end
+
+    # rubocop:disable Metrics/ParameterLists
+
+    # This endpoint retrieves a collection of payments along with their order details.
+    def self.list_payments(to_created_date:, from_created_date:, limit:, offset:, tokens:, ids:,
+                           merchant_ref:, statuses:, order_by:, asc:)
+      url = "/v2/payments?"
+      url += "toCreatedDate=#{to_created_date.gsub('+', '%2b')}" if to_created_date
+      url += "&fromCreatedDate=#{from_created_date.gsub('+', '%2b')}" if from_created_date
+      url += "&limit=#{limit}" if limit
+      url += "&offset=#{offset}" if offset
+      url += "&orderBy=#{order_by}" if order_by
+      url += "&ascending=#{asc}" if asc
+      url += create_url(url, "ids", ids)
+      url += create_url(url, "tokens", tokens)
+      url += create_url(url, "merchantReferences", merchant_ref)
+      url += create_url(url, "statuses", statuses)
+      request = Afterpay.client.get(url)
+      request.body
+    end
+
+    # rubocop:enable Metrics/ParameterLists
   end
 end
+
+# rubocop:enable Metrics/ClassLength

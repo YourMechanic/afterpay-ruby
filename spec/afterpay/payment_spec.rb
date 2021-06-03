@@ -148,4 +148,17 @@ RSpec.describe Afterpay::Payment do
       expect(status).to eq(204)
     end
   end
+
+  describe ".list_payments" do
+    it "returns an array of payments in results key", :vcr do
+      response = described_class.list_payments(
+        to_created_date: nil,
+        from_created_date: nil, limit: 10, offset: 0,
+        tokens: [],
+        ids: ["100101533036"], merchant_ref: ["100101382"],
+        statuses: ["Approved"], order_by: "createdAt", asc: false
+      )
+      expect(response[:results].size).to be > 0
+    end
+  end
 end
