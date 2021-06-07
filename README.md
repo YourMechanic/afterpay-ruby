@@ -46,9 +46,9 @@ end
 
 ### Creating an Order
 
-[api docs](https://YourMechanic/afterpay-sdk#create-checkout)
+[api docs](https://developers.afterpay.com/afterpay-online/reference#checkouts)
 
-Order accepts a [Consumer](YourMechanic/afterpay-sdk#consumer-object) and an array of [Item](YourMechanic/afterpay-sdk#item-object) object which are required.
+Order accepts a [Consumer](https://github.com/YourMechanic/afterpay-sdk#consumer-object) and an array of [Item](https://github.com/YourMechanic/afterpay-sdk#item-object) object which are required.
 
 ```ruby
 order = Afterpay::Order.create(
