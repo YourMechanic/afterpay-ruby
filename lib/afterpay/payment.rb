@@ -8,21 +8,27 @@ module Afterpay
     attr_accessor :id, :token, :status, :created, :original_amount, :open_to_capture_amount,
                   :payment_state, :merchant_reference, :refunds, :order, :events, :error
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
+
     # Initialize Payment from response
-    def initialize(attributes)
-      @id = attributes[:id].to_i
-      @token = attributes[:token]
-      @status = attributes[:status]
-      @created = attributes[:created]
-      @original_amount = Utils::Money.from_response(attributes[:originalAmount])
-      @open_to_capture_amount = Utils::Money.from_response(attributes[:openToCaptureAmount])
-      @payment_state = attributes[:paymentState]
-      @merchant_reference = attributes[:merchantReference]
-      @refunds = attributes[:refunds]
-      @order = Order.from_response(attributes[:orderDetails])
-      @events = attributes[:events]
+    def initialize(attributes = {})
+      @id = attributes[:id].to_i || ""
+      @token = attributes[:token] || ""
+      @status = attributes[:status] || ""
+      @created = attributes[:created] || ""
+      @original_amount = Utils::Money.from_response(attributes[:originalAmount]) || Money.from_amount(0)
+      @open_to_capture_amount = Utils::Money.from_response(attributes[:openToCaptureAmount]) || Money.from_amount(0)
+      @payment_state = attributes[:paymentState] || ""
+      @merchant_reference = attributes[:merchantReference] || ""
+      @refunds = attributes[:refunds] || []
+      @order = Order.from_response(attributes[:orderDetails]) || Afterpay::Order.new
+      @events = attributes[:events] || []
       @error = Error.new(attributes) if attributes[:errorId]
     end
+
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def success?
       @status == "APPROVED"

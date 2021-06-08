@@ -4,11 +4,11 @@ module Afterpay
   class Consumer
     attr_accessor :email, :phone, :first_name, :last_name
 
-    def initialize(email:, phone:, first_name:, last_name:)
-      @email = email
-      @phone = phone
-      @first_name = first_name
-      @last_name = last_name
+    def initialize(attributes = {})
+      @email = attributes[:email]
+      @phone = attributes[:phone] || ""
+      @first_name = attributes[:first_name] || ""
+      @last_name = attributes[:last_name] || ""
     end
 
     def to_hash
