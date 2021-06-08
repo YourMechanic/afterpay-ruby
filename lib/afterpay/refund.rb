@@ -5,13 +5,13 @@ module Afterpay
     attr_accessor :request_id, :amount, :merchant_reference, :refund_id, :refunded_at,
                   :refund_merchant_reference, :error
 
-    def initialize(attributes)
-      @request_id = attributes[:requestId]
+    def initialize(attributes = {})
+      @request_id = attributes[:requestId] || ""
       @amount = attributes[:amount]
-      @merchant_reference = attributes[:merchantReference]
-      @refund_id = attributes[:refundId]
-      @refunded_at = attributes[:refundAt]
-      @refund_merchant_reference = attributes[:refundMerchantReference]
+      @merchant_reference = attributes[:merchantReference] || ""
+      @refund_id = attributes[:refundId] || ""
+      @refunded_at = attributes[:refundAt] || ""
+      @refund_merchant_reference = attributes[:refundMerchantReference] || ""
       @error = Error.new(attributes) if attributes[:errorId]
     end
 

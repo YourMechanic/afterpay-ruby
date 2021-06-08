@@ -17,8 +17,8 @@ RSpec.describe Afterpay::Item do
     )
   end
 
-  it "sets a default quantity" do
-    expect(item.quantity).to eq(1)
+  it "do not set a default quantity" do
+    expect(item.quantity).to eq(nil)
   end
 
   it "allows overriding quantity" do
