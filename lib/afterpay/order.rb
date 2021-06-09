@@ -4,7 +4,7 @@ module Afterpay
   # The Order object for creating an order to `/v2/checkouts`
   class Order
     attr_accessor :total, :consumer, :items, :shipping, :tax, :discounts,
-                  :billing, :shipping_address, :billing_address, :reference,
+                  :billing, :shipping_address, :billing_address, :merchant_reference,
                   :payment_type, :success_url, :cancel_url, :redirect_checkout_url
 
     attr_reader :expiry, :token, :error
@@ -77,7 +77,7 @@ module Afterpay
           redirectConfirmUrl: success_url,
           redirectCancelUrl: cancel_url
         },
-        merchantReference: reference,
+        merchantReference: merchant_reference,
         taxAmount: tax,
         paymentType: payment_type
       }

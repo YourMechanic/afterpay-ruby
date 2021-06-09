@@ -57,7 +57,7 @@ order = Afterpay::Order.create(
   items: [<Afterpay::Item>],
   success_url: <String>,
   cancel_url: <String>,
-  reference: <String>,
+  merchant_reference: <String>,
   tax: <Money>,
   shipping: <Money | optional>,
   discounts: [<Afterpay::Discount | optional>],
