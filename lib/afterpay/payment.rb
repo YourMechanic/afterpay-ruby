@@ -49,7 +49,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_auth(request_id: nil, token:, merchant_reference: nil)
+    def self.execute_auth(token:, request_id: nil, merchant_reference: nil)
       request = Afterpay.client.post("/v2/payments/auth") do |req|
         req.body = {
           requestId: request_id,
@@ -60,8 +60,8 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_deferred_payment(request_id: nil, merchant_reference: nil, amount:,
-                                      payment_event_merchant_reference: nil, order_id:)
+    def self.execute_deferred_payment(amount:, order_id:, request_id: nil, merchant_reference: nil,
+                                      payment_event_merchant_reference: nil)
       request = Afterpay.client.post("/v2/payments/#{order_id}/capture") do |req|
         req.body = {
           requestId: request_id,
@@ -73,7 +73,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_void(request_id: nil, order_id:, amount:)
+    def self.execute_void(order_id:, amount:, request_id: nil)
       request = Afterpay.client.post("/v2/payments/#{order_id}/void") do |req|
         req.body = {
           requestId: request_id,
@@ -146,8 +146,7 @@ module Afterpay
     # rubocop:disable Metrics/ParameterLists
 
     # This endpoint retrieves a collection of payments along with their order details.
-    def self.list_payments(to_created_date: nil, from_created_date: nil, limit: nil, offset: nil, tokens:, ids:,
-                           merchant_ref:, statuses:, order_by: nil, asc: nil)
+    def self.list_payments(tokens:, ids:, merchant_ref:, statuses:, to_created_date: nil, from_created_date: nil, limit: nil, offset: nil, order_by: nil, asc: nil)
       url = "/v2/payments?"
       url += "toCreatedDate=#{to_created_date.gsub('+', '%2b')}" if to_created_date
       url += "&fromCreatedDate=#{from_created_date.gsub('+', '%2b')}" if from_created_date
