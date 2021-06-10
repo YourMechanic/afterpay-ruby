@@ -81,7 +81,7 @@ module Afterpay
         taxAmount: tax,
         paymentType: payment_type
       }
-      data[items] = items.map(&:to_hash) if items
+      data[:items] = items.map(&:to_hash) if items
       data[:taxAmount] = Utils::Money.api_hash(tax) if tax
       data[:shippingAmount] = Utils::Money.api_hash(shipping) if shipping
       data[:discounts] = discounts.map(&:to_hash) if discounts

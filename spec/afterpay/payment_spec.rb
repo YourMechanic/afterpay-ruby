@@ -4,7 +4,7 @@ RSpec.describe Afterpay::Payment do
   describe ".execute" do
     it "returns a payment", :vcr do
       token = "q3f6gn81q09gfjk7riaqfhavmtebt88qpjepd9kmjo37ou7oj5eb"
-      payment = described_class.execute(token: token, reference: "checkout-1")
+      payment = described_class.execute(token: token, merchant_reference: "checkout-1")
 
       expect(payment.success?).to be true
       expect(payment).to be_a Afterpay::Payment
@@ -15,7 +15,7 @@ RSpec.describe Afterpay::Payment do
     context "invalid token" do
       it "returns error", :vcr do
         token = "tgiibd59adl9rldhefaqm9jcgnhca8dvv07t9gcq7lboo6btsdfq"
-        payment = described_class.execute(token: token, reference: "checkout-1")
+        payment = described_class.execute(token: token, merchant_reference: "checkout-1")
 
         expect(payment).to be_a Afterpay::Payment
         expect(payment.success?).to be false
@@ -59,7 +59,7 @@ RSpec.describe Afterpay::Payment do
 
     it "returns a payment", :vcr do
       payment = described_class.execute_deferred_payment(request_id: "wert100101529590",
-                                                         reference: merchant_reference, amount: mony,
+                                                         merchant_reference: merchant_reference, amount: mony,
                                                          payment_event_merchant_reference: "", order_id: valid_order_id)
 
       expect(payment.success?).to be true
@@ -71,7 +71,7 @@ RSpec.describe Afterpay::Payment do
     context "invalid order ID" do
       it "returns error", :vcr do
         payment = described_class.execute_deferred_payment(request_id: "wert100101529590",
-                                                           reference: merchant_reference, amount: mony,
+                                                           merchant_reference: merchant_reference, amount: mony,
                                                            payment_event_merchant_reference: "", order_id: valid_order_id + 1)
 
         expect(payment).to be_a Afterpay::Payment
@@ -152,7 +152,6 @@ RSpec.describe Afterpay::Payment do
   describe ".list_payments" do
     it "returns an array of payments in results key", :vcr do
       response = described_class.list_payments(
-        to_created_date: nil,
         from_created_date: nil, limit: 10, offset: 0,
         tokens: [],
         ids: ["100101533036"], merchant_ref: ["100101382"],

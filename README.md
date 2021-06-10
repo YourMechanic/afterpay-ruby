@@ -94,7 +94,7 @@ order.error
 ```ruby
 payment = Afterpay::Payment.execute(
   token: token <String>,
-  reference: "checkout-1" <String>
+  merchant_reference: "checkout-1" <String>
 )
 => <Afterpay::Payment ...>
 
@@ -115,7 +115,7 @@ For Auth
 Afterpay::Payment.execute_auth(request_id: 'fjfwwwjfj090292920', token: '002.v4krg5qpii1tbp0kvr261rf3p1k5jfe2fin', merchant_reference: '100101382')
 
 For executing deferred payment
-Afterpay::Payment.execute_deferred_payment(request_id: 'ppjjjkjk', reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
+Afterpay::Payment.execute_deferred_payment(request_id: 'ppjjjkjk', merchant_reference: '100101382', amount: mony, payment_event_merchant_reference: '', order_id: 100101524323)
 ```
 
 ### Void payment

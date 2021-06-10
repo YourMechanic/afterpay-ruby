@@ -15,8 +15,8 @@ module Afterpay
       @error = Error.new(attributes) if attributes[:errorId]
     end
 
-    def self.execute(request_id:, order_id:, amount:, merchant_reference:,
-                     refund_merchant_reference:)
+    def self.execute(request_id: nil, order_id:, amount:, merchant_reference: nil,
+                     refund_merchant_reference: nil)
       request = Afterpay.client.post("/v2/payments/#{order_id}/refund") do |req|
         req.body = {
           requestId: request_id,

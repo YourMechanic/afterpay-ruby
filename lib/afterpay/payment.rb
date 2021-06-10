@@ -37,19 +37,19 @@ module Afterpay
     # Executes the Payment
     #
     # @param token [String] the Order token
-    # @param reference [String] the reference for payment
+    # @param merchant_reference [String] the merchant_reference for payment
     # @return [Payment] the Payment object
-    def self.execute(token:, reference:)
+    def self.execute(token:, merchant_reference: nil)
       request = Afterpay.client.post("/v2/payments/capture") do |req|
         req.body = {
           token: token,
-          merchantRefernce: reference
+          merchantReference: merchant_reference
         }
       end
       new(request.body)
     end
 
-    def self.execute_auth(request_id:, token:, merchant_reference:)
+    def self.execute_auth(request_id: nil, token:, merchant_reference: nil)
       request = Afterpay.client.post("/v2/payments/auth") do |req|
         req.body = {
           requestId: request_id,
@@ -60,12 +60,12 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_deferred_payment(request_id:, reference:, amount:,
-                                      payment_event_merchant_reference:, order_id:)
+    def self.execute_deferred_payment(request_id: nil, merchant_reference: nil, amount:,
+                                      payment_event_merchant_reference: nil, order_id:)
       request = Afterpay.client.post("/v2/payments/#{order_id}/capture") do |req|
         req.body = {
           requestId: request_id,
-          merchantRefernce: reference,
+          merchantReference: merchant_reference,
           amount: Utils::Money.api_hash(amount),
           paymentEventMerchantReference: payment_event_merchant_reference
         }
@@ -73,7 +73,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.execute_void(request_id:, order_id:, amount:)
+    def self.execute_void(request_id: nil, order_id:, amount:)
       request = Afterpay.client.post("/v2/payments/#{order_id}/void") do |req|
         req.body = {
           requestId: request_id,
@@ -83,7 +83,7 @@ module Afterpay
       new(request.body)
     end
 
-    def self.update_shipping_courier(order_id:, shipped_at:, name:, tracking:, priority:)
+    def self.update_shipping_courier(order_id:, shipped_at: nil, name: nil, tracking: nil, priority: nil)
       request = Afterpay.client.put("/v2/payments/#{order_id}/courier") do |req|
         req.body = {
           shippedAt: shipped_at,
@@ -146,8 +146,8 @@ module Afterpay
     # rubocop:disable Metrics/ParameterLists
 
     # This endpoint retrieves a collection of payments along with their order details.
-    def self.list_payments(to_created_date:, from_created_date:, limit:, offset:, tokens:, ids:,
-                           merchant_ref:, statuses:, order_by:, asc:)
+    def self.list_payments(to_created_date: nil, from_created_date: nil, limit: nil, offset: nil, tokens:, ids:,
+                           merchant_ref:, statuses:, order_by: nil, asc: nil)
       url = "/v2/payments?"
       url += "toCreatedDate=#{to_created_date.gsub('+', '%2b')}" if to_created_date
       url += "&fromCreatedDate=#{from_created_date.gsub('+', '%2b')}" if from_created_date
