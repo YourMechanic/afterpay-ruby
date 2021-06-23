@@ -27,5 +27,11 @@ module Afterpay
       end
       new(request.body)
     end
+
+    # Builds Refund from response
+    def self.from_response(response)
+      return nil if response.nil?
+      new(response)
+    end
   end
 end

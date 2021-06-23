@@ -12,5 +12,11 @@ module Afterpay
       @amount = Utils::Money.from_response(attributes[:amount]) || Money.from_amount(0)
       @payment_event_merchant_reference = attributes[:paymentEventMerchantReference] || ""
     end
+
+    # Builds PaymentEvent from response
+    def self.from_response(response)
+      return nil if response.nil?
+      new(response)
+    end
   end
 end

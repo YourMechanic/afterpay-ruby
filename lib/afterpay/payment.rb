@@ -21,26 +21,10 @@ module Afterpay
       @open_to_capture_amount = Utils::Money.from_response(attributes[:openToCaptureAmount]) || Money.from_amount(0)
       @payment_state = attributes[:paymentState] || ""
       @merchant_reference = attributes[:merchantReference] || ""
-      @refunds = !attributes[:refunds].nil? ? create_refund_objects_array(attributes[:refunds]) : []
+      @refunds = attributes[:refunds].map { |refund| Refund.from_response(refund) } || [] if !attributes[:refunds].nil?
       @order = Order.from_response(attributes[:orderDetails]) || Afterpay::Order.new
-      @events = !attributes[:events].nil? ? create_events_objects_array(attributes[:events]) : []
+      @events = attributes[:events].map { |event| PaymentEvent.from_response(event) } || [] if !attributes[:events].nil?
       @error = Error.new(attributes) if attributes[:errorId]
-    end
-
-    def create_refund_objects_array(refunds)
-      refunds_arr = []
-      refunds.each do |refund_elem|
-        refunds_arr << Afterpay::Refund.new(refund_elem)
-      end
-      refunds_arr
-    end
-
-    def create_events_objects_array(events)
-      events_arr = []
-      events.each do |event_elem|
-        events_arr << Afterpay::PaymentEvent.new(event_elem)
-      end
-      events_arr
     end
 
     # rubocop:enable Metrics/CyclomaticComplexity
