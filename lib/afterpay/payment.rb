@@ -21,9 +21,9 @@ module Afterpay
       @open_to_capture_amount = Utils::Money.from_response(attributes[:openToCaptureAmount]) || Money.from_amount(0)
       @payment_state = attributes[:paymentState] || ""
       @merchant_reference = attributes[:merchantReference] || ""
-      @refunds = attributes[:refunds] || []
+      @refunds = attributes[:refunds].map { |refund| Refund.from_response(refund) } || [] if !attributes[:refunds].nil?
       @order = Order.from_response(attributes[:orderDetails]) || Afterpay::Order.new
-      @events = attributes[:events] || []
+      @events = attributes[:events].map { |event| PaymentEvent.from_response(event) } || [] if !attributes[:events].nil?
       @error = Error.new(attributes) if attributes[:errorId]
     end
 
