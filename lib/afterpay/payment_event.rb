@@ -8,15 +8,23 @@ module Afterpay
       @id = attributes[:id].to_i || ""
       @created = attributes[:created] || ""
       @expires = attributes[:expires] || ""
-      @type = attributes[:expires] || ""
-      @amount = Utils::Money.from_response(attributes[:amount]) || Money.from_amount(0)
+      @type = attributes[:type] || ""
+      @amount = attributes[:amount] || Money.from_amount(0)
       @payment_event_merchant_reference = attributes[:paymentEventMerchantReference] || ""
     end
 
     # Builds PaymentEvent from response
     def self.from_response(response)
       return nil if response.nil?
-      new(response)
+
+      new(
+        id: response[:id].to_i,
+        created: response[:created],
+        expires: response[:expires],
+        type: response[:type],
+        amount: Utils::Money.from_response(response[:amount]),
+        payment_event_merchant_reference: response[:paymentEventMerchantReference]
+      )
     end
   end
 end

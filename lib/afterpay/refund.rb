@@ -5,15 +5,19 @@ module Afterpay
     attr_accessor :request_id, :amount, :merchant_reference, :refund_id, :refunded_at,
                   :refund_merchant_reference, :error
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+
     def initialize(attributes = {})
       @request_id = attributes[:requestId] || ""
-      @amount = attributes[:amount]
+      @amount = attributes[:amount] || Money.from_amount(0)
       @merchant_reference = attributes[:merchantReference] || ""
       @refund_id = attributes[:refundId] || ""
       @refunded_at = attributes[:refundAt] || ""
       @refund_merchant_reference = attributes[:refundMerchantReference] || ""
       @error = Error.new(attributes) if attributes[:errorId]
     end
+
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def self.execute(order_id:, amount:, request_id: nil, merchant_reference: nil,
                      refund_merchant_reference: nil)
@@ -31,7 +35,16 @@ module Afterpay
     # Builds Refund from response
     def self.from_response(response)
       return nil if response.nil?
-      new(response)
+
+      new(
+        request_id: response[:requestId],
+        amount: Utils::Money.from_response(response[:amount]),
+        merchant_reference: response[:merchantReference],
+        refund_id: response[:refundId],
+        refunded_at: response[:refundAt],
+        refund_merchant_reference: response[:refundMerchantReference],
+        error: Error.new(response)
+      )
     end
   end
 end
