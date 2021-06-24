@@ -7,7 +7,7 @@ module Afterpay
 
     def initialize(attributes = {})
       @request_id = attributes[:requestId] || ""
-      @amount = attributes[:amount]
+      @amount = attributes[:amount] || Money.from_amount(0)
       @merchant_reference = attributes[:merchantReference] || ""
       @refund_id = attributes[:refundId] || ""
       @refunded_at = attributes[:refundAt] || ""
@@ -31,7 +31,15 @@ module Afterpay
     # Builds Refund from response
     def self.from_response(response)
       return nil if response.nil?
-      new(response)
+      new(
+        request_id: response[:requestId],
+        amount: Utils::Money.from_response(response[:amount]),
+        merchant_reference: response[:merchantReference],
+        refund_id: response[:refundId],
+        refunded_at: response[:refundAt],
+        refund_merchant_reference: response[:refundMerchantReference],
+        error: Error.new(response)
+      )
     end
   end
 end
