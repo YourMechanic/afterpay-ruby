@@ -5,12 +5,12 @@ module Afterpay
     attr_accessor :id, :created, :expires, :type, :amount, :payment_event_merchant_reference
 
     def initialize(attributes = {})
-      @id = attributes[:id].to_i || ""
+      @id = attributes[:id] || ""
       @created = attributes[:created] || ""
       @expires = attributes[:expires] || ""
       @type = attributes[:type] || ""
       @amount = attributes[:amount] || Money.from_amount(0)
-      @payment_event_merchant_reference = attributes[:paymentEventMerchantReference] || ""
+      @payment_event_merchant_reference = attributes[:payment_event_merchant_reference] || ""
     end
 
     # Builds PaymentEvent from response
@@ -18,7 +18,7 @@ module Afterpay
       return nil if response.nil?
 
       new(
-        id: response[:id].to_i,
+        id: response[:id],
         created: response[:created],
         expires: response[:expires],
         type: response[:type],
