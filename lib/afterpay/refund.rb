@@ -39,6 +39,7 @@ module Afterpay
     # Builds Refund from response
     def self.from_response(response)
       return nil if response.nil?
+
       new(
         request_id: response[:requestId],
         amount: Utils::Money.from_response(response[:amount]),
