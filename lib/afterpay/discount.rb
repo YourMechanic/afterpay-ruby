@@ -20,7 +20,7 @@ module Afterpay
       return nil if response.nil?
 
       new(
-        name: response[:display_name],
+        name: response[:displayName],
         amount: Utils::Money.from_response(response[:amount])
       )
     end
