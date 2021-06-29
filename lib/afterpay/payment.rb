@@ -13,7 +13,7 @@ module Afterpay
 
     # Initialize Payment from response
     def initialize(attributes = {})
-      @id = attributes[:id].to_i || ""
+      @id = attributes[:id] || ""
       @token = attributes[:token] || ""
       @status = attributes[:status] || ""
       @created = attributes[:created] || ""

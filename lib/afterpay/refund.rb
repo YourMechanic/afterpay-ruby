@@ -29,7 +29,7 @@ module Afterpay
           refundMerchantReference: refund_merchant_reference
         }
       end
-      new(request.body)
+      from_response(request.body)
     end
 
     def success?
