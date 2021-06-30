@@ -6,6 +6,7 @@ module Afterpay
                   :refund_merchant_reference, :error
 
     # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
 
     def initialize(attributes = {})
       @request_id = attributes[:request_id] || ""
@@ -14,10 +15,11 @@ module Afterpay
       @refund_id = attributes[:refund_id] || ""
       @refunded_at = attributes[:refunded_at] || ""
       @refund_merchant_reference = attributes[:refund_merchant_reference] || ""
-      @error = Error.new(attributes) if attributes[:errorId]
+      @error = Error.new(attributes[:error]) if attributes[:error] && attributes[:error][:errorId]
     end
 
     # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def self.execute(order_id:, amount:, request_id: nil, merchant_reference: nil,
                      refund_merchant_reference: nil)
@@ -47,7 +49,7 @@ module Afterpay
         refund_id: response[:refundId],
         refunded_at: response[:refundedAt],
         refund_merchant_reference: response[:refundMerchantReference],
-        error: Error.new(response)
+        error: response
       )
     end
   end

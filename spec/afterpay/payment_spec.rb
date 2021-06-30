@@ -114,7 +114,7 @@ RSpec.describe Afterpay::Payment do
       payment = described_class.get_payment_by_order_id(order_id: valid_order_id)
 
       expect(payment).to be_a Afterpay::Payment
-      expect(payment.id).to eq(100101529842)
+      expect(payment.id).to eq("100101529842")
       expect(payment.error).to be_nil
     end
   end
