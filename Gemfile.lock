@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    afterpay-sdk (2.0.0)
+    afterpay-sdk (2.0.1)
       faraday (>= 0.8, < 1.0)
       faraday_middleware (~> 0.13.1)
       money (>= 6.7.1, < 7.0.0)
@@ -12,7 +12,7 @@ GEM
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     coderay (1.1.2)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     coveralls (0.8.22)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
