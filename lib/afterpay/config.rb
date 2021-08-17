@@ -5,7 +5,8 @@ module Afterpay
     attr_accessor :app_id, :secret, :env, :raise_errors,
                   :type, :maximum_amount, :minimum_amount,
                   :description, :currency, :skip_remote_config,
-                  :user_agent_header
+                  :user_agent_header, :afterpay_plugin, :platform,
+                  :system_information, :merchant_id, :merchant_website_url
 
     def initialize
       @env = "sandbox"
