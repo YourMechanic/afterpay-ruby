@@ -6,7 +6,7 @@ module Afterpay
                   :type, :maximum_amount, :minimum_amount,
                   :description, :currency, :skip_remote_config,
                   :afterpay_plugin, :platform,
-                  :system_information, :merchant_id, :merchant_website_url
+                  :system_information, :merchant_website_url
 
     def initialize
       @env = "sandbox"
