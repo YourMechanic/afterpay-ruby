@@ -42,13 +42,11 @@ Afterpay.configure do |config|
   # config.afterpay_plugin = 'MyAfterpayModule/1.0.0'
   # config.platform = 'Rails/3.2.22.3'
   # config.system_information = 'RUBY/2.3.8'
-  # config.merchant_id = '1210010182'
   # config.merchant_website_url = <merchant_website_url>
 
   config.afterpay_plugin = <afterpay_plugin>
   config.platform = <platform>
   config.system_information = <system_information>
-  config.merchant_id = <merchant_id>
   config.merchant_website_url = <merchant_website_url>
   
 end
