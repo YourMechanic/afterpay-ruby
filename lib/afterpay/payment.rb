@@ -34,6 +34,10 @@ module Afterpay
       @status == "APPROVED"
     end
 
+    def declined?
+      @status == "DECLINED"
+    end
+
     # Executes the Payment
     #
     # @param token [String] the Order token
