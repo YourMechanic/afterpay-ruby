@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Install bundler for afterpay-sdk
           working_directory: ~/YourMechanic/afterpay-sdk
-          command: gem install bundler:2.2.8
+          command: gem install bundler:2.2.11
       - run:
           name: Install Gems for afterpay-sdk
           working_directory: ~/YourMechanic/afterpay-sdk
