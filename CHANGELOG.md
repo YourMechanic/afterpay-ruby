@@ -24,3 +24,8 @@
 
 * enhancement
   * Expose declined? method in payment object, this is primarily applicable only for authorization (by @siddyg)
+
+### 2.0.4 - 2021-08-24
+
+* enhancement
+  * added circleci support (by @sachinsaxena1996)
